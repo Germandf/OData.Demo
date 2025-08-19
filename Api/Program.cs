@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -16,7 +14,10 @@ builder.Services
         opt.Select().Filter().Expand().OrderBy().Count().SetMaxTop(100)
            .AddRouteComponents("", GetEdmModel()));
 
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.DocumentFilter<ODataSwaggerCleanupFilter>();
+});
 
 var app = builder.Build();
 
@@ -24,7 +25,8 @@ using var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<AppDb>();
 if (!db.Customers.Any()) DbSeeder.Seed(db);
 
-app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
@@ -43,43 +45,24 @@ static IEdmModel GetEdmModel()
 public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Customer> Get() => db.Customers;
-
-    [EnableQuery]
-    public SingleResult<Customer> Get([FromRoute] int key) => SingleResult.Create(db.Customers.Where(c => c.Id == key));
-
-    [EnableQuery]
-    public IQueryable<Order> GetOrders([FromRoute] int key) => db.Orders.Where(o => o.CustomerId == key);
-
-    [EnableQuery]
-    public IQueryable<OrderItem> GetOrderItems([FromRoute] int key) => db.OrderItems.Where(i => i.Order.CustomerId == key);
+    public IQueryable<Customer> Get() => db.Customers
+        .Include(x => x.Orders)
+            .ThenInclude(o => o.Items);
 }
 
 public class OrdersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Order> Get() => db.Orders;
-
-    [EnableQuery]
-    public SingleResult<Order> Get([FromRoute] int key) => SingleResult.Create(db.Orders.Where(o => o.Id == key));
-
-    [EnableQuery]
-    public IQueryable<OrderItem> GetItems([FromRoute] int key) => db.OrderItems.Where(i => i.OrderId == key);
-
-    [EnableQuery]
-    public SingleResult<Customer> GetCustomer([FromRoute] int key) => SingleResult.Create(db.Orders.Where(o => o.Id == key).Select(o => o.Customer));
+    public IQueryable<Order> Get() => db.Orders
+        .Include(x => x.Customer)
+        .Include(x => x.Items);
 }
 
 public class OrderItemsController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<OrderItem> Get() => db.OrderItems;
-
-    [EnableQuery]
-    public SingleResult<OrderItem> Get([FromRoute] int key) => SingleResult.Create(db.OrderItems.Where(i => i.Id == key));
-
-    [EnableQuery]
-    public SingleResult<Order> GetOrder([FromRoute] int key) => SingleResult.Create(db.OrderItems.Where(i => i.Id == key).Select(i => i.Order));
+    public IQueryable<OrderItem> Get() => db.OrderItems
+        .Include(x => x.Order);
 }
 
 public class AppDb : DbContext
