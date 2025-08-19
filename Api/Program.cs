@@ -17,6 +17,7 @@ builder.Services
 builder.Services.AddSwaggerGen(c =>
 {
     c.DocumentFilter<ODataSwaggerCleanupFilter>();
+    c.OperationFilter<ODataQueryOptionsOperationFilter>();
 });
 
 var app = builder.Build();
