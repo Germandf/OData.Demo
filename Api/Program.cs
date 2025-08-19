@@ -45,24 +45,19 @@ static IEdmModel GetEdmModel()
 public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Customer> Get() => db.Customers
-        .Include(x => x.Orders)
-            .ThenInclude(o => o.Items);
+    public IQueryable<Customer> Get() => db.Customers;
 }
 
 public class OrdersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Order> Get() => db.Orders
-        .Include(x => x.Customer)
-        .Include(x => x.Items);
+    public IQueryable<Order> Get() => db.Orders;
 }
 
 public class OrderItemsController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<OrderItem> Get() => db.OrderItems
-        .Include(x => x.Order);
+    public IQueryable<OrderItem> Get() => db.OrderItems;
 }
 
 public class AppDb : DbContext
