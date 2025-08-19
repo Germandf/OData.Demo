@@ -35,28 +35,85 @@ app.Run();
 static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    var customers = builder.EntitySet<Customer>("Customers");
-    var orders = builder.EntitySet<Order>("Orders");
-    var items = builder.EntitySet<OrderItem>("OrderItems");
-    customers.HasManyBinding(c => c.Orders, orders);
-    orders.HasManyBinding(o => o.Items, items);
+    builder.EntitySet<CustomerDto>("Customers");
+    builder.EntitySet<OrderDto>("Orders");
+    builder.EntitySet<OrderItemDto>("OrderItems");
     return builder.GetEdmModel();
 }
 
 public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Customer> Get() => db.Customers;
+    public IQueryable<CustomerDto> Get() =>
+        db.Customers.AsNoTracking().Select(c => new CustomerDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            City = c.City,
+            Orders = c.Orders.Select(o => new OrderDto
+            {
+                Id = o.Id,
+                PlacedAt = o.PlacedAt,
+                Total = o.Total,
+                CustomerId = o.CustomerId,
+                Customer = new CustomerDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    City = c.City
+                },
+                Items = o.Items.Select(i => new OrderItemDto
+                {
+                    Id = i.Id,
+                    Sku = i.Sku,
+                    Description = i.Description,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    OrderId = i.OrderId,
+                }).ToList()
+            }).ToList()
+        });
 }
 
 public class OrdersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<Order> Get() => db.Orders;
+    public IQueryable<OrderDto> Get() =>
+        db.Orders.AsNoTracking().Select(o => new OrderDto
+        {
+            Id = o.Id,
+            PlacedAt = o.PlacedAt,
+            Total = o.Total,
+            CustomerId = o.CustomerId,
+            Customer = new CustomerDto
+            {
+                Id = o.Customer.Id,
+                Name = o.Customer.Name,
+                City = o.Customer.City
+            },
+            Items = o.Items.Select(i => new OrderItemDto
+            {
+                Id = i.Id,
+                Sku = i.Sku,
+                Description = i.Description,
+                Quantity = i.Quantity,
+                UnitPrice = i.UnitPrice,
+                OrderId = i.OrderId,
+            }).ToList()
+        });
 }
 
 public class OrderItemsController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<OrderItem> Get() => db.OrderItems;
+    public IQueryable<OrderItemDto> Get() =>
+        db.OrderItems.AsNoTracking().Select(i => new OrderItemDto
+        {
+            Id = i.Id,
+            Sku = i.Sku,
+            Description = i.Description,
+            Quantity = i.Quantity,
+            UnitPrice = i.UnitPrice,
+            OrderId = i.OrderId,
+        });
 }
