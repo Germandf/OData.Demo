@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDb>(opt => opt.UseInMemoryDatabase("odata-demo"));
 builder.Services
-    .AddControllers()
+    .AddControllers(opt =>
+        opt.Filters.Add<ODataRequestLoggingFilter>())
     .AddOData(opt =>
         opt.Select().Filter().Expand().OrderBy().Count().SetMaxTop(100)
            .AddRouteComponents("", GetEdmModel()));
