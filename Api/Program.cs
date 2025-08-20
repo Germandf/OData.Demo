@@ -36,9 +36,9 @@ app.Run();
 static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    builder.EntitySet<CustomerDto>("Customers");
-    builder.EntitySet<OrderDto>("Orders");
-    builder.EntitySet<OrderItemDto>("OrderItems");
+    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
+    builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
+    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     return builder.GetEdmModel();
 }
 
