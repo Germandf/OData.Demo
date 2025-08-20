@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.OData.Core" Version="8.3.0" />
     <PackageReference Include="Microsoft.OData.Edm" Version="8.3.0" />
     <PackageReference Include="Microsoft.Spatial" Version="8.3.0" />
+    <PackageReference Include="Spectre.Console.Json" Version="0.50.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.8" />
   </ItemGroup>
