@@ -1,0 +1,71 @@
+﻿@page "/"
+@inject BlazorApp.OData.Client.Container OData
+
+<PageTitle>Home</PageTitle>
+
+<h3>Customers (no expand)</h3>
+
+@if (_customers is null)
+{
+    <p>Loading…</p>
+}
+else
+{
+    <table>
+        <thead><tr><th>Id</th><th>Name</th><th>City</th></tr></thead>
+        <tbody>
+            @foreach (var c in _customers)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Name</td>
+                    <td>@c.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h3 class="mt-4">Customers → Orders → Items (nested expand)</h3>
+
+@if (_customersDeep is null)
+{
+    <p>Loading…</p>
+}
+else
+{
+    @foreach (var c in _customersDeep)
+    {
+        <h4>@c.Name (@c.City)</h4>
+        <ul>
+            @foreach (var o in c.Orders)
+            {
+                <li>
+                    Order #@o.Id — @o.PlacedAt: @o.Total
+                    <ul>
+                        @foreach (var i in o.Items)
+                        {
+                            <li>@i.Sku — @i.Description — Qty @i.Quantity — @i.UnitPrice</li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    List<BlazorApp.OData.Client.CustomerDto>? _customers;
+    List<BlazorApp.OData.Client.CustomerDto>? _customersDeep;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var q1 = OData.Customers.AddQueryOption("$top", 50);
+        _customers = (await q1.ExecuteAsync()).ToList();
+
+        var q2 = OData.Customers
+            .Expand("Orders($expand=Items)")
+            .AddQueryOption("$top", 50);
+        _customersDeep = (await q2.ExecuteAsync()).ToList();
+    }
+}
