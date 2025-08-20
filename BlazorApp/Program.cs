@@ -1,4 +1,5 @@
 using BlazorApp.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,10 @@ builder.Services.AddScoped(sp =>
     ctx.Configurations.RequestPipeline.OnMessageCreating = args => new Microsoft.OData.Client.HttpClientRequestMessage(args);
     return ctx;
 });
+
+builder.Services.AddHttpClient();
+builder.Services.AddFluentUIComponents();
+builder.Services.AddDataGridODataAdapter();
 
 var app = builder.Build();
 

@@ -1,71 +1,89 @@
 ﻿@page "/"
-@inject BlazorApp.OData.Client.Container OData
+@using BlazorApp.OData.Client
+@using Microsoft.FluentUI.AspNetCore.Components
+@inject Container OData
 
 <PageTitle>Home</PageTitle>
 
-<h3>Customers (no expand)</h3>
+<FluentCard Class="p-4">
+    <h3>Customers</h3>
+    <FluentDataGrid TGridItem="CustomerDto"
+                    Items="@OData.Customers"
+                    Pagination="@_customersPager"
+                    ShowHover="true"
+                    OnRowClick="SelectCustomer">
+        <PropertyColumn Title="Id" Property="c => c.Id"   />
+        <PropertyColumn Title="Name" Property="c => c.Name" />
+        <PropertyColumn Title="City" Property="c => c.City" />
+    </FluentDataGrid>
+    <FluentPaginator State="@_customersPager" Class="mt-3" />
+</FluentCard>
 
-@if (_customers is null)
+@if (_selectedCustomerId is not null)
 {
-    <p>Loading…</p>
-}
-else
-{
-    <table>
-        <thead><tr><th>Id</th><th>Name</th><th>City</th></tr></thead>
-        <tbody>
-            @foreach (var c in _customers)
-            {
-                <tr>
-                    <td>@c.Id</td>
-                    <td>@c.Name</td>
-                    <td>@c.City</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <FluentCard Class="p-4 mt-6">
+        <h3>Orders for customer @_selectedCustomerName</h3>
+        <FluentDataGrid TGridItem="OrderDto"
+                        Items="@_ordersQuery"
+                        Pagination="@_ordersPager"
+                        ShowHover="true"
+                        OnRowClick="SelectOrder">
+            <PropertyColumn Title="Order #" Property="o => o.Id" />
+            <PropertyColumn Title="Placed At" Property="o => o.PlacedAt" />
+            <PropertyColumn Title="Total" Property="o => o.Total" />
+        </FluentDataGrid>
+        <FluentPaginator State="@_ordersPager" Class="mt-3" />
+        <p class="mt-4"><i>(Select an order to drill down to items if you want; you can also render a 3rd grid bound to `Items`.)</i></p>
+    </FluentCard>
 }
 
-<h3 class="mt-4">Customers → Orders → Items (nested expand)</h3>
-
-@if (_customersDeep is null)
+@if (_selectedOrderId is not null)
 {
-    <p>Loading…</p>
-}
-else
-{
-    @foreach (var c in _customersDeep)
-    {
-        <h4>@c.Name (@c.City)</h4>
-        <ul>
-            @foreach (var o in c.Orders)
-            {
-                <li>
-                    Order #@o.Id — @o.PlacedAt: @o.Total
-                    <ul>
-                        @foreach (var i in o.Items)
-                        {
-                            <li>@i.Sku — @i.Description — Qty @i.Quantity — @i.UnitPrice</li>
-                        }
-                    </ul>
-                </li>
-            }
-        </ul>
-    }
+    <FluentCard Class="p-4 mt-6">
+        <h3>Items for order @_selectedOrderId</h3>
+        <FluentDataGrid TGridItem="OrderItemDto"
+                        Items="@_itemsQuery"
+                        Pagination="@_itemsPager">
+            <PropertyColumn Title="Id" Property="i => i.Id" />
+            <PropertyColumn Title="SKU" Property="i => i.Sku" />
+            <PropertyColumn Title="Description" Property="i => i.Description" />
+            <PropertyColumn Title="Qty" Property="i => i.Quantity" />
+            <PropertyColumn Title="Unit Price" Property="i => i.UnitPrice" />
+        </FluentDataGrid>
+        <FluentPaginator State="@_itemsPager" Class="mt-3" />
+    </FluentCard>
 }
 
 @code {
-    List<BlazorApp.OData.Client.CustomerDto>? _customers;
-    List<BlazorApp.OData.Client.CustomerDto>? _customersDeep;
 
-    protected override async Task OnInitializedAsync()
+    private PaginationState _customersPager = new PaginationState();
+    private PaginationState _ordersPager = new PaginationState();
+    private PaginationState _itemsPager = new();
+
+    private int? _selectedCustomerId;
+    private string? _selectedCustomerName;
+    private int? _selectedOrderId;
+
+    private IQueryable<OrderDto>? _ordersQuery;
+    private IQueryable<OrderItemDto>? _itemsQuery;
+
+    private void SelectCustomer(FluentDataGridRow< CustomerDto> c)
     {
-        var q1 = OData.Customers.AddQueryOption("$top", 50);
-        _customers = (await q1.ExecuteAsync()).ToList();
+        if (c.Item is null) return;
+        _selectedCustomerId = c.Item.Id;
+        _selectedCustomerName = c.Item.Name;
+        _ordersQuery = OData.Orders
+            .Expand(o => o.Items)
+            .Where(o => o.CustomerId == _selectedCustomerId);
+        _selectedOrderId = null;
+        _itemsQuery = null;
+    }
 
-        var q2 = OData.Customers
-            .Expand("Orders($expand=Items)")
-            .AddQueryOption("$top", 50);
-        _customersDeep = (await q2.ExecuteAsync()).ToList();
+    private void SelectOrder(FluentDataGridRow<OrderDto> row)
+    {
+        if (row.Item is null) return;
+        _selectedOrderId = row.Item.Id;
+        _itemsQuery = OData.OrderItems
+            .Where(i => i.OrderId == _selectedOrderId);
     }
 }
