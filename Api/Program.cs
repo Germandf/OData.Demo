@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -49,12 +51,27 @@ public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery]
     public IQueryable<CustomerDto> Get() => db.Customers.ProjectTo(DtoProjections.CustomerProjection());
+
+    // Necessary for Power Query to work with OData the wrong way (a lot of individual calls)
+    [EnableQuery]
+    public IQueryable<OrderDto> GetOrders([FromODataUri] int key) =>
+        db.Orders.Where(o => o.CustomerId == key).ProjectTo(DtoProjections.OrderProjection());
+
+    // Necessary for Power Query to work with OData the wrong way (a lot of individual calls)
+    [EnableQuery]
+    public SingleResult<CityDto> GetCity([FromODataUri] int key) =>
+        SingleResult.Create(db.Customers.Where(c => c.Id == key).Select(c => c.City).Select(DtoProjections.CityProjection()));
 }
 
 public class OrdersController(AppDb db) : ODataController
 {
     [EnableQuery]
     public IQueryable<OrderDto> Get() => db.Orders.ProjectTo(DtoProjections.OrderProjection());
+
+    // Necessary for Power Query to work with OData the wrong way (a lot of individual calls)
+    [EnableQuery]
+    public IQueryable<OrderItemDto> GetItems([FromODataUri] int key) => db.OrderItems
+        .Where(i => i.OrderId == key).ProjectTo(DtoProjections.OrderItemProjection());
 }
 
 public class OrderItemsController(AppDb db) : ODataController
