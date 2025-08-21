@@ -7,7 +7,7 @@ using Microsoft.OData.ModelBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDb>(opt => opt.UseInMemoryDatabase("odata-demo"));
+builder.Services.AddDbContext<AppDb>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 builder.Services
     .AddControllers(opt =>
         opt.Filters.Add<ODataRequestLoggingFilter>())
@@ -25,6 +25,7 @@ var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<AppDb>();
+db.Database.EnsureCreated();
 if (!db.Customers.Any()) DbSeeder.Seed(db);
 
 app.UseSwagger();
