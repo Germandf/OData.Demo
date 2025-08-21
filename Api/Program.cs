@@ -63,12 +63,6 @@ public class CustomersController(AppDb db) : ODataController
                 PlacedAt = o.PlacedAt,
                 Total = o.Total,
                 CustomerId = o.CustomerId,
-                Customer = new CustomerDto
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    CityId = c.CityId,
-                },
                 Items = o.Items.Select(i => new OrderItemDto
                 {
                     Id = i.Id,
@@ -92,12 +86,6 @@ public class OrdersController(AppDb db) : ODataController
             PlacedAt = o.PlacedAt,
             Total = o.Total,
             CustomerId = o.CustomerId,
-            Customer = new CustomerDto
-            {
-                Id = o.Customer.Id,
-                Name = o.Customer.Name,
-                CityId = o.Customer.CityId,
-            },
             Items = o.Items.Select(i => new OrderItemDto
             {
                 Id = i.Id,

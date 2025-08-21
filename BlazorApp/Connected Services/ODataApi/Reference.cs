@@ -330,13 +330,19 @@ namespace OData.Demo.OData.Client
         /// <param name="ID">Initial value of Id.</param>
         /// <param name="name">Initial value of Name.</param>
         /// <param name="cityId">Initial value of CityId.</param>
+        /// <param name="city">Initial value of City.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        public static CustomerDto CreateCustomerDto(int ID, string name, int cityId)
+        public static CustomerDto CreateCustomerDto(int ID, string name, int cityId, global::OData.Demo.OData.Client.CityDto city)
         {
             CustomerDto customerDto = new CustomerDto();
             customerDto.Id = ID;
             customerDto.Name = name;
             customerDto.CityId = cityId;
+            if ((city == null))
+            {
+                throw new global::System.ArgumentNullException("city");
+            }
+            customerDto.City = city;
             return customerDto;
         }
         /// <summary>
@@ -416,6 +422,7 @@ namespace OData.Demo.OData.Client
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("City")]
+        [global::System.ComponentModel.DataAnnotations.RequiredAttribute(ErrorMessage = "City is required.")]
         public virtual global::OData.Demo.OData.Client.CityDto City
         {
             get
@@ -500,28 +507,6 @@ namespace OData.Demo.OData.Client
             : base(query) {}
 
         /// <summary>
-        /// There are no comments for Customer in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("Customer")]
-        public virtual global::OData.Demo.OData.Client.CustomerDtoSingle Customer
-        {
-            get
-            {
-                if (!this.IsComposable)
-                {
-                    throw new global::System.NotSupportedException("The previous function is not composable.");
-                }
-                if ((this._Customer == null))
-                {
-                    this._Customer = new global::OData.Demo.OData.Client.CustomerDtoSingle(this.Context, GetPath("Customer"));
-                }
-                return this._Customer;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        private global::OData.Demo.OData.Client.CustomerDtoSingle _Customer;
-        /// <summary>
         /// There are no comments for Items in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
@@ -562,20 +547,14 @@ namespace OData.Demo.OData.Client
         /// <param name="placedAt">Initial value of PlacedAt.</param>
         /// <param name="total">Initial value of Total.</param>
         /// <param name="customerId">Initial value of CustomerId.</param>
-        /// <param name="customer">Initial value of Customer.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        public static OrderDto CreateOrderDto(int ID, global::System.DateTimeOffset placedAt, decimal total, int customerId, global::OData.Demo.OData.Client.CustomerDto customer)
+        public static OrderDto CreateOrderDto(int ID, global::System.DateTimeOffset placedAt, decimal total, int customerId)
         {
             OrderDto orderDto = new OrderDto();
             orderDto.Id = ID;
             orderDto.PlacedAt = placedAt;
             orderDto.Total = total;
             orderDto.CustomerId = customerId;
-            if ((customer == null))
-            {
-                throw new global::System.ArgumentNullException("customer");
-            }
-            orderDto.Customer = customer;
             return orderDto;
         }
         /// <summary>
@@ -674,30 +653,6 @@ namespace OData.Demo.OData.Client
         private int _CustomerId;
         partial void OnCustomerIdChanging(int value);
         partial void OnCustomerIdChanged();
-        /// <summary>
-        /// There are no comments for Property Customer in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("Customer")]
-        [global::System.ComponentModel.DataAnnotations.RequiredAttribute(ErrorMessage = "Customer is required.")]
-        public virtual global::OData.Demo.OData.Client.CustomerDto Customer
-        {
-            get
-            {
-                return this._Customer;
-            }
-            set
-            {
-                this.OnCustomerChanging(value);
-                this._Customer = value;
-                this.OnCustomerChanged();
-                this.OnPropertyChanged("Customer");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        private global::OData.Demo.OData.Client.CustomerDto _Customer;
-        partial void OnCustomerChanging(global::OData.Demo.OData.Client.CustomerDto value);
-        partial void OnCustomerChanged();
         /// <summary>
         /// There are no comments for Property Items in the schema.
         /// </summary>

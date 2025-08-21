@@ -5,8 +5,8 @@
 
 <PageTitle>Home</PageTitle>
 
-<FluentCard Class="p-4">
-    <h3>Customers</h3>
+<FluentCard Class="p-2">
+    <h4>Customers</h4>
     <FluentDataGrid TGridItem="CustomerDto"
                     Items="@OData.Customers"
                     Pagination="@_customersPager"
@@ -16,13 +16,13 @@
         <PropertyColumn Title="Name" Property="c => c.Name" />
         <PropertyColumn Title="City Id" Property="c => c.CityId" />
     </FluentDataGrid>
-    <FluentPaginator State="@_customersPager" Class="mt-3" />
+    <FluentPaginator State="@_customersPager" Class="mt-2" />
 </FluentCard>
 
 @if (_selectedCustomerId is not null)
 {
-    <FluentCard Class="p-4 mt-6">
-        <h3>Orders for customer @_selectedCustomerName</h3>
+    <FluentCard Class="p-2 mt-6">
+        <h4>Orders for customer @_selectedCustomerName</h4>
         <FluentDataGrid TGridItem="OrderDto"
                         Items="@_ordersQuery"
                         Pagination="@_ordersPager"
@@ -32,15 +32,14 @@
             <PropertyColumn Title="Placed At" Property="o => o.PlacedAt" />
             <PropertyColumn Title="Total" Property="o => o.Total" />
         </FluentDataGrid>
-        <FluentPaginator State="@_ordersPager" Class="mt-3" />
-        <p class="mt-4"><i>(Select an order to drill down to items if you want; you can also render a 3rd grid bound to `Items`.)</i></p>
+        <FluentPaginator State="@_ordersPager" Class="mt-2" />
     </FluentCard>
 }
 
 @if (_selectedOrderId is not null)
 {
-    <FluentCard Class="p-4 mt-6">
-        <h3>Items for order @_selectedOrderId</h3>
+    <FluentCard Class="p-2 mt-6">
+        <h4>Items for order @_selectedOrderId</h4>
         <FluentDataGrid TGridItem="OrderItemDto"
                         Items="@_itemsQuery"
                         Pagination="@_itemsPager">
@@ -50,7 +49,7 @@
             <PropertyColumn Title="Qty" Property="i => i.Quantity" />
             <PropertyColumn Title="Unit Price" Property="i => i.UnitPrice" />
         </FluentDataGrid>
-        <FluentPaginator State="@_itemsPager" Class="mt-3" />
+        <FluentPaginator State="@_itemsPager" Class="mt-2" />
     </FluentCard>
 }
 

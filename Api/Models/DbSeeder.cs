@@ -19,13 +19,13 @@ public static class DbSeeder
 
         var orderFaker = new Faker<Order>("es")
             .RuleFor(o => o.PlacedAt, f => f.Date.Between(DateTime.UtcNow.AddMonths(-18), DateTime.UtcNow))
-            .RuleFor(o => o.Items, f => itemFaker.Generate(f.Random.Number(1, 6)).ToList())
+            .RuleFor(o => o.Items, f => itemFaker.Generate(2).ToList())
             .FinishWith((f, o) => o.Total = o.Items.Sum(it => it.UnitPrice * it.Quantity));
 
         var customerFaker = new Faker<Customer>("es")
             .RuleFor(c => c.Name, f => f.Person.FullName)
             .RuleFor(c => c.City, f => cityFaker.Generate())
-            .RuleFor(c => c.Orders, f => orderFaker.Generate(f.Random.Int(0, 10)).ToList());
+            .RuleFor(c => c.Orders, f => orderFaker.Generate(2).ToList());
 
         var customers = customerFaker.Generate(customerCount);
         db.Customers.AddRange(customers);

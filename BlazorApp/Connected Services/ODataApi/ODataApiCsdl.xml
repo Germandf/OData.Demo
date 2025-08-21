@@ -8,7 +8,7 @@
         <Property Name="Id" Type="Edm.Int32" Nullable="false" />
         <Property Name="Name" Type="Edm.String" Nullable="false" />
         <Property Name="CityId" Type="Edm.Int32" Nullable="false" />
-        <NavigationProperty Name="City" Type="Default.CityDto" />
+        <NavigationProperty Name="City" Type="Default.CityDto" Nullable="false" />
         <NavigationProperty Name="Orders" Type="Collection(Default.OrderDto)" />
       </EntityType>
       <EntityType Name="OrderDto">
@@ -19,7 +19,6 @@
         <Property Name="PlacedAt" Type="Edm.DateTimeOffset" Nullable="false" />
         <Property Name="Total" Type="Edm.Decimal" Nullable="false" Scale="variable" />
         <Property Name="CustomerId" Type="Edm.Int32" Nullable="false" />
-        <NavigationProperty Name="Customer" Type="Default.CustomerDto" Nullable="false" />
         <NavigationProperty Name="Items" Type="Collection(Default.OrderItemDto)" />
       </EntityType>
       <EntityType Name="OrderItemDto">
@@ -52,7 +51,6 @@
           <NavigationPropertyBinding Path="Orders" Target="Orders" />
         </EntitySet>
         <EntitySet Name="Orders" EntityType="Default.OrderDto">
-          <NavigationPropertyBinding Path="Customer" Target="Customers" />
           <NavigationPropertyBinding Path="Items" Target="OrderItems" />
         </EntitySet>
         <EntitySet Name="OrderItems" EntityType="Default.OrderItemDto" />
