@@ -12,15 +12,18 @@ var ctx = new Container(serviceRoot);
 ctx.Format.UseJson();
 ctx.MergeOption = MergeOption.NoTracking;
 
-var customersWithStringExpand = await ctx.Customers
+var customersWithStringExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
     .Expand("Orders($expand=Items)")
+    .Take(1))
     .ExecuteAsync();
 
-var customersWithLambdaExpand = await ctx.Customers
+var customersWithLambdaExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
     .Expand(c => c.Orders)
+    .Take(1))
     .ExecuteAsync();
 
-var customersWithoutExpand = await ctx.Customers
+var customersWithoutExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
+    .Take(1))
     .ExecuteAsync();
 
 WriteJsonInConsole(customersWithStringExpand, "Expand with raw string");
