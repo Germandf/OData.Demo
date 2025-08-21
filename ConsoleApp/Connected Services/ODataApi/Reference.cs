@@ -131,19 +131,19 @@ namespace OData.Demo.OData.Client
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("Cities")]
-        public virtual global::Microsoft.OData.Client.DataServiceQuery<City> Cities
+        public virtual global::Microsoft.OData.Client.DataServiceQuery<CityDto> Cities
         {
             get
             {
                 if ((this._Cities == null))
                 {
-                    this._Cities = base.CreateQuery<City>("Cities");
+                    this._Cities = base.CreateQuery<CityDto>("Cities");
                 }
                 return this._Cities;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        private global::Microsoft.OData.Client.DataServiceQuery<City> _Cities;
+        private global::Microsoft.OData.Client.DataServiceQuery<CityDto> _Cities;
         /// <summary>
         /// There are no comments for Customers in the schema.
         /// </summary>
@@ -172,9 +172,9 @@ namespace OData.Demo.OData.Client
         /// There are no comments for Cities in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        public virtual void AddToCities(City city)
+        public virtual void AddToCities(CityDto cityDto)
         {
-            base.AddObject("Cities", city);
+            base.AddObject("Cities", cityDto);
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
         private abstract class GeneratedEdmModel
@@ -919,121 +919,6 @@ namespace OData.Demo.OData.Client
         }
     }
     /// <summary>
-    /// There are no comments for CitySingle in the schema.
-    /// </summary>
-    [global::Microsoft.OData.Client.OriginalNameAttribute("CitySingle")]
-    public partial class CitySingle : global::Microsoft.OData.Client.DataServiceQuerySingle<City>
-    {
-        /// <summary>
-        /// Initialize a new CitySingle object.
-        /// </summary>
-        public CitySingle(global::Microsoft.OData.Client.DataServiceContext context, string path)
-            : base(context, path) {}
-
-        /// <summary>
-        /// Initialize a new CitySingle object.
-        /// </summary>
-        public CitySingle(global::Microsoft.OData.Client.DataServiceContext context, string path, bool isComposable)
-            : base(context, path, isComposable) {}
-
-        /// <summary>
-        /// Initialize a new CitySingle object.
-        /// </summary>
-        public CitySingle(global::Microsoft.OData.Client.DataServiceQuerySingle<City> query)
-            : base(query) {}
-
-    }
-    /// <summary>
-    /// There are no comments for City in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::Microsoft.OData.Client.Key("Id")]
-    [global::Microsoft.OData.Client.EntitySet("Cities")]
-    [global::Microsoft.OData.Client.OriginalNameAttribute("City")]
-    public partial class City : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Create a new City object.
-        /// </summary>
-        /// <param name="ID">Initial value of Id.</param>
-        /// <param name="name">Initial value of Name.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        public static City CreateCity(int ID, string name)
-        {
-            City city = new City();
-            city.Id = ID;
-            city.Name = name;
-            return city;
-        }
-        /// <summary>
-        /// There are no comments for Property Id in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("Id")]
-        [global::System.ComponentModel.DataAnnotations.RequiredAttribute(ErrorMessage = "Id is required.")]
-        public virtual int Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        private int _Id;
-        partial void OnIdChanging(int value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// There are no comments for Property Name in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("Name")]
-        [global::System.ComponentModel.DataAnnotations.RequiredAttribute(ErrorMessage = "Name is required.")]
-        public virtual string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
     /// There are no comments for CityDtoSingle in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("CityDtoSingle")]
@@ -1065,6 +950,7 @@ namespace OData.Demo.OData.Client
     /// Id
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("Id")]
+    [global::Microsoft.OData.Client.EntitySet("Cities")]
     [global::Microsoft.OData.Client.OriginalNameAttribute("CityDto")]
     public partial class CityDto : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
     {
@@ -1220,29 +1106,6 @@ namespace OData.Demo.OData.Client
                 { "Id", id }
             };
             return new global::OData.Demo.OData.Client.OrderItemDtoSingle(_source.Context, _source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(_source.Context, _keys)));
-        }
-        /// <summary>
-        /// Get an entity of type global::OData.Demo.OData.Client.City as global::OData.Demo.OData.Client.CitySingle specified by key from an entity set
-        /// </summary>
-        /// <param name="_source">source entity set</param>
-        /// <param name="_keys">dictionary with the names and values of keys</param>
-        public static global::OData.Demo.OData.Client.CitySingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::OData.Demo.OData.Client.City> _source, global::System.Collections.Generic.IDictionary<string, object> _keys)
-        {
-            return new global::OData.Demo.OData.Client.CitySingle(_source.Context, _source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(_source.Context, _keys)));
-        }
-        /// <summary>
-        /// Get an entity of type global::OData.Demo.OData.Client.City as global::OData.Demo.OData.Client.CitySingle specified by key from an entity set
-        /// </summary>
-        /// <param name="_source">source entity set</param>
-        /// <param name="id">The value of id</param>
-        public static global::OData.Demo.OData.Client.CitySingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::OData.Demo.OData.Client.City> _source,
-            int id)
-        {
-            global::System.Collections.Generic.IDictionary<string, object> _keys = new global::System.Collections.Generic.Dictionary<string, object>
-            {
-                { "Id", id }
-            };
-            return new global::OData.Demo.OData.Client.CitySingle(_source.Context, _source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(_source.Context, _keys)));
         }
         /// <summary>
         /// Get an entity of type global::OData.Demo.OData.Client.CityDto as global::OData.Demo.OData.Client.CityDtoSingle specified by key from an entity set

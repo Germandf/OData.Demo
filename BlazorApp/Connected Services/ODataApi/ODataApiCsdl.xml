@@ -32,13 +32,6 @@
         <Property Name="UnitPrice" Type="Edm.Decimal" Nullable="false" Scale="variable" />
         <Property Name="OrderId" Type="Edm.Int32" Nullable="false" />
       </EntityType>
-      <EntityType Name="City">
-        <Key>
-          <PropertyRef Name="Id" />
-        </Key>
-        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" />
-      </EntityType>
       <EntityType Name="CityDto">
         <Key>
           <PropertyRef Name="Id" />
@@ -48,13 +41,14 @@
       </EntityType>
       <EntityContainer Name="Container">
         <EntitySet Name="Customers" EntityType="Default.CustomerDto">
+          <NavigationPropertyBinding Path="City" Target="Cities" />
           <NavigationPropertyBinding Path="Orders" Target="Orders" />
         </EntitySet>
         <EntitySet Name="Orders" EntityType="Default.OrderDto">
           <NavigationPropertyBinding Path="Items" Target="OrderItems" />
         </EntitySet>
         <EntitySet Name="OrderItems" EntityType="Default.OrderItemDto" />
-        <EntitySet Name="Cities" EntityType="Default.City" />
+        <EntitySet Name="Cities" EntityType="Default.CityDto" />
       </EntityContainer>
     </Schema>
   </edmx:DataServices>

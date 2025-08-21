@@ -39,7 +39,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
-    builder.EntitySet<City>("Cities").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
+    builder.EntitySet<CityDto>("Cities").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     return builder.GetEdmModel();
 }
 
