@@ -10,7 +10,7 @@
     "IncludeT4File": false,
     "ExcludedOperationImports": [],
     "ExcludedBoundOperations": [],
-    "OmitVersioningInfo": false,
+    "OmitVersioningInfo": true,
     "ServiceName": "ODataApi",
     "Endpoint": "https://localhost:7007/$metadata",
     "EdmxVersion": {
