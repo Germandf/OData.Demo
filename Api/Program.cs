@@ -12,8 +12,7 @@ builder.Services
     .AddControllers(opt =>
         opt.Filters.Add<ODataRequestLoggingFilter>())
     .AddOData(opt =>
-        opt.Select().Filter().Expand().OrderBy().Count().SetMaxTop(100)
-           .AddRouteComponents("", GetEdmModel()));
+        opt.EnableQueryFeatures().AddRouteComponents("", GetEdmModel()));
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -37,10 +36,12 @@ app.Run();
 static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
-    builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
-    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
-    builder.EntitySet<CityDto>("Cities").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
+    const int defaultMaxTop = 100;
+    const int defaultPageSize = 100;
+    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 110, pageSizeValue: 110);
+    builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
+    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
+    builder.EntitySet<CityDto>("Cities").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
     return builder.GetEdmModel();
 }
 
