@@ -46,80 +46,23 @@ static IEdmModel GetEdmModel()
 public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<CustomerDto> Get() =>
-        db.Customers.AsNoTracking().Select(c => new CustomerDto
-        {
-            Id = c.Id,
-            Name = c.Name,
-            CityId = c.CityId,
-            City = new CityDto
-            {
-                Id = c.City.Id,
-                Name = c.City.Name
-            },
-            Orders = c.Orders.Select(o => new OrderDto
-            {
-                Id = o.Id,
-                PlacedAt = o.PlacedAt,
-                Total = o.Total,
-                CustomerId = o.CustomerId,
-                Items = o.Items.Select(i => new OrderItemDto
-                {
-                    Id = i.Id,
-                    Sku = i.Sku,
-                    Description = i.Description,
-                    Quantity = i.Quantity,
-                    UnitPrice = i.UnitPrice,
-                    OrderId = i.OrderId,
-                }).ToList()
-            }).ToList()
-        });
+    public IQueryable<CustomerDto> Get() => db.Customers.ProjectTo(DtoProjections.CustomerProjection());
 }
 
 public class OrdersController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<OrderDto> Get() =>
-        db.Orders.AsNoTracking().Select(o => new OrderDto
-        {
-            Id = o.Id,
-            PlacedAt = o.PlacedAt,
-            Total = o.Total,
-            CustomerId = o.CustomerId,
-            Items = o.Items.Select(i => new OrderItemDto
-            {
-                Id = i.Id,
-                Sku = i.Sku,
-                Description = i.Description,
-                Quantity = i.Quantity,
-                UnitPrice = i.UnitPrice,
-                OrderId = i.OrderId,
-            }).ToList()
-        });
+    public IQueryable<OrderDto> Get() => db.Orders.ProjectTo(DtoProjections.OrderProjection());
 }
 
 public class OrderItemsController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<OrderItemDto> Get() =>
-        db.OrderItems.AsNoTracking().Select(i => new OrderItemDto
-        {
-            Id = i.Id,
-            Sku = i.Sku,
-            Description = i.Description,
-            Quantity = i.Quantity,
-            UnitPrice = i.UnitPrice,
-            OrderId = i.OrderId,
-        });
+    public IQueryable<OrderItemDto> Get() => db.OrderItems.ProjectTo(DtoProjections.OrderItemProjection());
 }
 
 public class CitiesController(AppDb db) : ODataController
 {
     [EnableQuery]
-    public IQueryable<City> Get() =>
-        db.Cities.AsNoTracking().Select(c => new City
-        {
-            Id = c.Id,
-            Name = c.Name
-        });
+    public IQueryable<CityDto> Get() => db.Cities.ProjectTo(DtoProjections.CityProjection());
 }
