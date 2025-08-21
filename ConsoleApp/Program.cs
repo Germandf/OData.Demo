@@ -13,11 +13,12 @@ ctx.Format.UseJson();
 ctx.MergeOption = MergeOption.NoTracking;
 
 var customersWithStringExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
-    .Expand("Orders($expand=Items)")
+    .Expand("City,Orders($expand=Items)")
     .Take(1))
     .ExecuteAsync();
 
 var customersWithLambdaExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
+    .Expand(c => c.City)
     .Expand(c => c.Orders)
     .Take(1))
     .ExecuteAsync();

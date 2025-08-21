@@ -8,6 +8,9 @@ public static class DbSeeder
 
         Randomizer.Seed = new Random(seed ?? Environment.TickCount);
 
+        var cityFaker = new Faker<City>("es")
+            .RuleFor(c => c.Name, f => f.Address.City());
+
         var itemFaker = new Faker<OrderItem>("es")
             .RuleFor(i => i.Sku, f => $"SKU-{f.IndexFaker:D7}")
             .RuleFor(i => i.Description, f => f.Commerce.ProductName())
@@ -21,7 +24,7 @@ public static class DbSeeder
 
         var customerFaker = new Faker<Customer>("es")
             .RuleFor(c => c.Name, f => f.Person.FullName)
-            .RuleFor(c => c.City, f => f.Address.City())
+            .RuleFor(c => c.City, f => cityFaker.Generate())
             .RuleFor(c => c.Orders, f => orderFaker.Generate(f.Random.Int(0, 10)).ToList());
 
         var customers = customerFaker.Generate(customerCount);

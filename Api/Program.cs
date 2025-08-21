@@ -39,6 +39,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
+    builder.EntitySet<City>("Cities").EntityType.Page(maxTopValue: 100, pageSizeValue: 100);
     return builder.GetEdmModel();
 }
 
@@ -50,7 +51,12 @@ public class CustomersController(AppDb db) : ODataController
         {
             Id = c.Id,
             Name = c.Name,
-            City = c.City,
+            CityId = c.CityId,
+            City = new CityDto
+            {
+                Id = c.City.Id,
+                Name = c.City.Name
+            },
             Orders = c.Orders.Select(o => new OrderDto
             {
                 Id = o.Id,
@@ -61,7 +67,7 @@ public class CustomersController(AppDb db) : ODataController
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    City = c.City
+                    CityId = c.CityId,
                 },
                 Items = o.Items.Select(i => new OrderItemDto
                 {
@@ -90,7 +96,7 @@ public class OrdersController(AppDb db) : ODataController
             {
                 Id = o.Customer.Id,
                 Name = o.Customer.Name,
-                City = o.Customer.City
+                CityId = o.Customer.CityId,
             },
             Items = o.Items.Select(i => new OrderItemDto
             {
@@ -116,5 +122,16 @@ public class OrderItemsController(AppDb db) : ODataController
             Quantity = i.Quantity,
             UnitPrice = i.UnitPrice,
             OrderId = i.OrderId,
+        });
+}
+
+public class CitiesController(AppDb db) : ODataController
+{
+    [EnableQuery]
+    public IQueryable<City> Get() =>
+        db.Cities.AsNoTracking().Select(c => new City
+        {
+            Id = c.Id,
+            Name = c.Name
         });
 }
