@@ -1,5 +1,5 @@
-﻿using ConsoleApp.OData.Client;
-using Microsoft.OData.Client;
+﻿using Microsoft.OData.Client;
+using OData.Demo.OData.Client;
 using Spectre.Console;
 using Spectre.Console.Json;
 using System.Text;

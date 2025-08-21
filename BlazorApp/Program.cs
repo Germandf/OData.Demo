@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped(sp =>
 {
-    var ctx = new BlazorApp.OData.Client.Container(new Uri("https://localhost:7007/"));
+    var ctx = new OData.Demo.OData.Client.Container(new Uri("https://localhost:7007/"));
     ctx.Format.UseJson();
     ctx.MergeOption = Microsoft.OData.Client.MergeOption.NoTracking;
     ctx.Configurations.RequestPipeline.OnMessageCreating = args => new Microsoft.OData.Client.HttpClientRequestMessage(args);
