@@ -9,6 +9,7 @@ public static class QueryableExtensions
         Expression<Func<TSource, TDto>> projection)
         where TSource : class
         => query.AsNoTracking()
-                .AsExpandable()
+                .AsSplitQuery()
+                .AsExpandableEF()
                 .Select(projection);
 }
