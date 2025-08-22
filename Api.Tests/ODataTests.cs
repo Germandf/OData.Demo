@@ -15,6 +15,15 @@ public class ODataTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
+    public async Task ServiceDocument_Is_Verified()
+    {
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringAsync();
+        await VerifyJson(json);
+    }
+
+    [Fact]
     public async Task Metadata_Is_Verified()
     {
         var response = await _client.GetAsync("/$metadata");
