@@ -8,12 +8,7 @@ using Microsoft.OData.ModelBuilder;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDb>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
-builder.Services
-    .AddControllers(opt =>
-        opt.Filters.Add<ODataRequestLoggingFilter>())
-    .AddOData(opt =>
-        opt.EnableQueryFeatures().AddRouteComponents("", GetEdmModel()));
-
+builder.Services.AddControllers().AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("", GetEdmModel()));
 builder.Services.AddSwaggerGen(c =>
 {
     c.DocumentFilter<ODataSwaggerCleanupFilter>();
@@ -24,6 +19,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 app.EnsureDbCreatedAndSeeded();
+app.UseRequestResponseLogging();
 app.UseApiKey("asd123");
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -34,4 +34,15 @@ public static class IApplicationBuilderExtensions
             await next();
         });
     }
+
+    public static IApplicationBuilder UseRequestResponseLogging(this IApplicationBuilder app)
+    {
+        return app.Use(async (ctx, next) =>
+        {
+            var logger = ctx.RequestServices.GetRequiredService<ILogger<Program>>();
+            await next();
+            logger.LogInformation("{StatusCode} -> {Method} {Url}",
+                ctx.Response.StatusCode, ctx.Request.Method, Uri.UnescapeDataString(ctx.Request.GetDisplayUrl()));
+        });
+    }
 }
