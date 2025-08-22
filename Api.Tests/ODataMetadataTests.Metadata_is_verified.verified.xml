@@ -1,0 +1,55 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="CustomerDto">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="CityId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="City" Type="Default.CityDto" Nullable="false" />
+        <NavigationProperty Name="Orders" Type="Collection(Default.OrderDto)" />
+      </EntityType>
+      <EntityType Name="OrderDto">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PlacedAt" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Total" Type="Edm.Decimal" Nullable="false" Scale="variable" />
+        <Property Name="CustomerId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="Items" Type="Collection(Default.OrderItemDto)" />
+      </EntityType>
+      <EntityType Name="OrderItemDto">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Sku" Type="Edm.String" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" Nullable="false" />
+        <Property Name="Quantity" Type="Edm.Int32" Nullable="false" />
+        <Property Name="UnitPrice" Type="Edm.Decimal" Nullable="false" Scale="variable" />
+        <Property Name="OrderId" Type="Edm.Int32" Nullable="false" />
+      </EntityType>
+      <EntityType Name="CityDto">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+      </EntityType>
+      <EntityContainer Name="Container">
+        <EntitySet Name="Customers" EntityType="Default.CustomerDto">
+          <NavigationPropertyBinding Path="City" Target="Cities" />
+          <NavigationPropertyBinding Path="Orders" Target="Orders" />
+        </EntitySet>
+        <EntitySet Name="Orders" EntityType="Default.OrderDto">
+          <NavigationPropertyBinding Path="Items" Target="OrderItems" />
+        </EntitySet>
+        <EntitySet Name="OrderItems" EntityType="Default.OrderItemDto" />
+        <EntitySet Name="Cities" EntityType="Default.CityDto" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

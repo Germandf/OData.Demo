@@ -68,3 +68,5 @@ public class CitiesController(AppDb db) : ODataController
     [EnableQuery]
     public IQueryable<CityDto> Get() => db.Cities.ProjectTo(DtoProjections.CityProjection());
 }
+
+public partial class Program { }
