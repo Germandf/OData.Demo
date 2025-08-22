@@ -2,11 +2,11 @@
 
 namespace Api.Tests;
 
-public class ODataMetadataTests : IClassFixture<WebApplicationFactory<Program>>
+public class ODataTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public ODataMetadataTests(WebApplicationFactory<Program> factory)
+    public ODataTests(WebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
