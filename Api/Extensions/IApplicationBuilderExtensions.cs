@@ -8,6 +8,15 @@ public static class IApplicationBuilderExtensions
     {
         return app.Use(async (ctx, next) =>
         {
+            var apiKey = ctx.Request.Headers[ApiKeyName].FirstOrDefault() ?? ctx.Request.Query[ApiKeyName].FirstOrDefault();
+            if (ctx.Request.Query.ContainsKey(ApiKeyName))
+            {
+                var qb = new QueryBuilder();
+                foreach (var kv in ctx.Request.Query)
+                    if (!string.Equals(kv.Key, ApiKeyName, StringComparison.OrdinalIgnoreCase))
+                        foreach (var v in kv.Value) qb.Add(kv.Key, v!);
+                ctx.Request.QueryString = qb.ToQueryString();
+            }
             if (ctx.Request.Path.StartsWithSegments("/swagger") ||
                 ctx.Request.Path == "/" ||
                 ctx.Request.Path == "/$metadata")
@@ -15,21 +24,10 @@ public static class IApplicationBuilderExtensions
                 await next();
                 return;
             }
-            var apiKey = ctx.Request.Headers[ApiKeyName].FirstOrDefault() ?? ctx.Request.Query[ApiKeyName].FirstOrDefault();
             if (apiKey != validApiKey)
             {
                 ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
-            }
-            if (ctx.Request.Query.ContainsKey(ApiKeyName))
-            {
-                var qb = new QueryBuilder();
-                foreach (var kv in ctx.Request.Query)
-                {
-                    if (!string.Equals(kv.Key, ApiKeyName, StringComparison.OrdinalIgnoreCase))
-                        foreach (var v in kv.Value) qb.Add(kv.Key, v!);
-                }
-                ctx.Request.QueryString = qb.ToQueryString();
             }
             await next();
         });
