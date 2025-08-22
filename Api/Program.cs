@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.DocumentFilter<ODataSwaggerCleanupFilter>();
     c.OperationFilter<ODataQueryOptionsOperationFilter>();
+    c.DocumentFilter<ApiKeySecurityDocumentFilter>();
 });
 
 var app = builder.Build();
@@ -27,6 +28,7 @@ var db = scope.ServiceProvider.GetRequiredService<AppDb>();
 db.Database.EnsureCreated();
 if (!db.Customers.Any()) DbSeeder.Seed(db);
 
+app.UseApiKey("asd123");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();

@@ -509,6 +509,16 @@
         },
         additionalProperties: false
       }
+    },
+    securitySchemes: {
+      ApiKey: {
+        type: apiKey,
+        name: ApiKey,
+        in: header
+      }
     }
-  }
+  },
+  security: [
+    {}
+  ]
 }
