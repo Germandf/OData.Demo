@@ -23,11 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<AppDb>();
-db.Database.EnsureCreated();
-if (!db.Customers.Any()) DbSeeder.Seed(db);
-
+app.EnsureDbCreatedAndSeeded();
 app.UseApiKey("asd123");
 app.UseSwagger();
 app.UseSwaggerUI();
