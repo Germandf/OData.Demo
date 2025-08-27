@@ -1,5 +1,6 @@
 ﻿using Microsoft.OData.Client;
 using OData.Demo.OData.Client;
+using OData.QueryBuilder.Builders;
 using Spectre.Console;
 using Spectre.Console.Json;
 using System.Text;
@@ -31,9 +32,19 @@ var customersWithoutExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
     .Take(1))
     .ExecuteAsync();
 
+var uri = new ODataQueryBuilder<Container>(serviceRoot.ToString())
+    .For<CustomerDto>(c => c.Customers)
+    .ByList()
+    .Expand(x => x.For<CityDto>(c => c.City))
+    .Expand(x => x.For<OrderDto>(c => c.Orders).Expand(y => y.For<OrderItemDto>(i => i.Items)))
+    .Top(1)
+    .ToUri();
+var customersWithODataQueryBuilder = await ctx.ExecuteAsync<CustomerDto>(uri);
+
 WriteJsonInConsole(customersWithStringExpand, "Expand with raw string");
 WriteJsonInConsole(customersWithLambdaExpand, "Expand with lambda");
 WriteJsonInConsole(customersWithoutExpand, "No expand");
+WriteJsonInConsole(customersWithODataQueryBuilder, "Expand with ODataQueryBuilder");
 
 static void WriteJsonInConsole<T>(IEnumerable<T> items, string title)
 {
