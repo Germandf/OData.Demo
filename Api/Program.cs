@@ -31,10 +31,10 @@ static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
     var defaultPage = new ODataPage { MaxTop = 100, PageSize = 100 };
-    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(new() { MaxTop = 110, PageSize = 110 });
-    builder.EntitySet<OrderDto>("Orders").EntityType.Page(defaultPage);
-    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(defaultPage);
-    builder.EntitySet<CityDto>("Cities").EntityType.Page(defaultPage);
+    builder.EntitySet<CustomerDto>("Customers").Page(new() { MaxTop = 110, PageSize = 110 });
+    builder.EntitySet<OrderDto>("Orders").Page(defaultPage);
+    builder.EntitySet<OrderItemDto>("OrderItems").Page(defaultPage);
+    builder.EntitySet<CityDto>("Cities").Page(defaultPage);
     return builder.GetEdmModel();
 }
 
