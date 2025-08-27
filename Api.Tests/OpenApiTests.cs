@@ -8,10 +8,7 @@ public class OpenApiTests : IClassFixture<WebApplicationFactory<Program>>
 
     public OpenApiTests(WebApplicationFactory<Program> factory)
     {
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false
-        });
+        _client = factory.CreateClient();
     }
 
     [Fact]
