@@ -30,12 +30,11 @@ app.Run();
 static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    const int defaultMaxTop = 100;
-    const int defaultPageSize = 100;
-    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(maxTopValue: 110, pageSizeValue: 110);
-    builder.EntitySet<OrderDto>("Orders").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
-    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
-    builder.EntitySet<CityDto>("Cities").EntityType.Page(maxTopValue: defaultMaxTop, pageSizeValue: defaultPageSize);
+    var defaultPage = new ODataPage { MaxTop = 100, PageSize = 100 };
+    builder.EntitySet<CustomerDto>("Customers").EntityType.Page(new() { MaxTop = 110, PageSize = 110 });
+    builder.EntitySet<OrderDto>("Orders").EntityType.Page(defaultPage);
+    builder.EntitySet<OrderItemDto>("OrderItems").EntityType.Page(defaultPage);
+    builder.EntitySet<CityDto>("Cities").EntityType.Page(defaultPage);
     return builder.GetEdmModel();
 }
 
