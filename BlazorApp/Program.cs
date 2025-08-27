@@ -12,6 +12,10 @@ builder.Services.AddScoped(sp =>
     ctx.Format.UseJson();
     ctx.MergeOption = Microsoft.OData.Client.MergeOption.NoTracking;
     ctx.Configurations.RequestPipeline.OnMessageCreating = args => new Microsoft.OData.Client.HttpClientRequestMessage(args);
+    ctx.SendingRequest2 += (sender, e) =>
+    {
+        e.RequestMessage.SetHeader("ApiKey", "asd123");
+    };
     return ctx;
 });
 

@@ -11,6 +11,10 @@ var serviceRoot = new Uri("https://localhost:7007/");
 var ctx = new Container(serviceRoot);
 ctx.Format.UseJson();
 ctx.MergeOption = MergeOption.NoTracking;
+ctx.SendingRequest2 += (sender, e) =>
+{
+    e.RequestMessage.SetHeader("ApiKey", "asd123");
+};
 
 var customersWithStringExpand = await ((DataServiceQuery<CustomerDto>)ctx.Customers
     .Expand("City,Orders($expand=Items)")
