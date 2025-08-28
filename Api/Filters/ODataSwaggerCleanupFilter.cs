@@ -17,6 +17,11 @@ public sealed class ODataSwaggerCleanupFilter : IDocumentFilter
             {
                 if (isMetadata)
                 {
+                    if (!string.IsNullOrWhiteSpace(op.OperationId) && op.OperationId.Contains('$'))
+                    {
+                        op.OperationId = "GetMetadata";
+                    }
+
                     op.RequestBody = null;
                     foreach (var r in op.Responses.Values)
                     {
@@ -31,6 +36,11 @@ public sealed class ODataSwaggerCleanupFilter : IDocumentFilter
 
                 if (isServiceDoc)
                 {
+                    if (string.IsNullOrWhiteSpace(op.OperationId) || op.OperationId.Equals("metadata", StringComparison.OrdinalIgnoreCase) || op.OperationId.Equals("Metadata", StringComparison.Ordinal))
+                    {
+                        op.OperationId = "GetServiceDocument";
+                    }
+
                     op.RequestBody = null;
                     foreach (var r in op.Responses.Values)
                     {
