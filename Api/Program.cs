@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -45,6 +46,25 @@ public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery(PageSize = 110, MaxTop = 110)]
     public IQueryable<CustomerDto> GetCustomers() => db.Customers.ProjectTo(DtoProjections.CustomerProjection());
+}
+
+[Route("Customers"), Tags("Customers")]
+public class CustomersCustomController(AppDb db) : ControllerBase
+{
+    [HttpPost("", Name = nameof(CreateCustomer))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerDto))]
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request)
+    {
+        var entity = new Customer
+        {
+            Name = request.Name,
+            CityId = request.CityId,
+        };
+        db.Customers.Add(entity);
+        await db.SaveChangesAsync();
+        var dto = await db.Customers.Where(c => c.Id == entity.Id).ProjectTo(DtoProjections.CustomerProjection()).FirstAsync();
+        return Ok(dto);
+    }
 }
 
 public class OrdersController(AppDb db) : ODataController
