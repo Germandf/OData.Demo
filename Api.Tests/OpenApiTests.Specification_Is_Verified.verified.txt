@@ -72,9 +72,27 @@
             content: {
               application/json: {
                 schema: {
-                  type: array,
-                  items: {
-                    $ref: #/components/schemas/CityDto
+                  required: [
+                    value
+                  ],
+                  type: object,
+                  properties: {
+                    @odata.context: {
+                      type: string
+                    },
+                    @odata.count: {
+                      type: integer,
+                      format: int32
+                    },
+                    @odata.nextLink: {
+                      type: string
+                    },
+                    value: {
+                      type: array,
+                      items: {
+                        $ref: #/components/schemas/CityDto
+                      }
+                    }
                   }
                 }
               }
@@ -150,9 +168,27 @@
             content: {
               application/json: {
                 schema: {
-                  type: array,
-                  items: {
-                    $ref: #/components/schemas/CustomerDto
+                  required: [
+                    value
+                  ],
+                  type: object,
+                  properties: {
+                    @odata.context: {
+                      type: string
+                    },
+                    @odata.count: {
+                      type: integer,
+                      format: int32
+                    },
+                    @odata.nextLink: {
+                      type: string
+                    },
+                    value: {
+                      type: array,
+                      items: {
+                        $ref: #/components/schemas/CustomerDto
+                      }
+                    }
                   }
                 }
               }
@@ -290,9 +326,27 @@
             content: {
               application/json: {
                 schema: {
-                  type: array,
-                  items: {
-                    $ref: #/components/schemas/OrderItemDto
+                  required: [
+                    value
+                  ],
+                  type: object,
+                  properties: {
+                    @odata.context: {
+                      type: string
+                    },
+                    @odata.count: {
+                      type: integer,
+                      format: int32
+                    },
+                    @odata.nextLink: {
+                      type: string
+                    },
+                    value: {
+                      type: array,
+                      items: {
+                        $ref: #/components/schemas/OrderItemDto
+                      }
+                    }
                   }
                 }
               }
@@ -368,9 +422,27 @@
             content: {
               application/json: {
                 schema: {
-                  type: array,
-                  items: {
-                    $ref: #/components/schemas/OrderDto
+                  required: [
+                    value
+                  ],
+                  type: object,
+                  properties: {
+                    @odata.context: {
+                      type: string
+                    },
+                    @odata.count: {
+                      type: integer,
+                      format: int32
+                    },
+                    @odata.nextLink: {
+                      type: string
+                    },
+                    value: {
+                      type: array,
+                      items: {
+                        $ref: #/components/schemas/OrderDto
+                      }
+                    }
                   }
                 }
               }
