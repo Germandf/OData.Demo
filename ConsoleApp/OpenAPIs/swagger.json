@@ -10,7 +10,7 @@
         "tags": [
           "Cities"
         ],
-        "operationId": "Cities",
+        "operationId": "GetCities",
         "parameters": [
           {
             "name": "$select",
@@ -106,7 +106,7 @@
         "tags": [
           "Customers"
         ],
-        "operationId": "Customers",
+        "operationId": "GetCustomers",
         "parameters": [
           {
             "name": "$select",
@@ -264,7 +264,7 @@
         "tags": [
           "OrderItems"
         ],
-        "operationId": "OrderItems",
+        "operationId": "GetOrderItems",
         "parameters": [
           {
             "name": "$select",
@@ -360,7 +360,7 @@
         "tags": [
           "Orders"
         ],
-        "operationId": "Orders",
+        "operationId": "GetOrders",
         "parameters": [
           {
             "name": "$select",

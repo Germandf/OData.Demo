@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen(c =>
     c.DocumentFilter<ODataSwaggerCleanupFilter>();
     c.OperationFilter<ODataQueryOptionsOperationFilter>();
     c.OperationFilter<ODataCollectionResponseOperationFilter>();
+    c.OperationFilter<ODataOperationIdFilter>();
     c.DocumentFilter<ApiKeySecurityDocumentFilter>();
 });
 
@@ -43,7 +44,7 @@ static IEdmModel GetEdmModel()
 public class CustomersController(AppDb db) : ODataController
 {
     [EnableQuery(PageSize = 110, MaxTop = 110)]
-    public IQueryable<CustomerDto> Get() => db.Customers.ProjectTo(DtoProjections.CustomerProjection());
+    public IQueryable<CustomerDto> GetCustomers() => db.Customers.ProjectTo(DtoProjections.CustomerProjection());
 }
 
 public class OrdersController(AppDb db) : ODataController

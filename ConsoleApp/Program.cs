@@ -44,7 +44,7 @@ var customersWithODataQueryBuilder = await ctx.ExecuteAsync<CustomerDto>(uri);
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("ApiKey", "asd123");
 var apiClient = new OData.Demo.OpenApi.Client.ApiClient("https://localhost:7007/", httpClient);
-var customersWithOpenApiGeneratedClient = (await apiClient.CustomersAsync(
+var customersWithOpenApiGeneratedClient = (await apiClient.GetCustomersAsync(
     expand: "City,Orders($expand=Items)",
     top: 1))
     .Value;
