@@ -17,6 +17,6 @@ public class OpenApiTests : IClassFixture<WebApplicationFactory<Program>>
         var response = await _client.GetAsync("/swagger/v1/swagger.json");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
-        await VerifyJson(json);
+        await Verify(json, extension: "json");
     }
 }

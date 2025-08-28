@@ -17,7 +17,7 @@ public class ODataTests : IClassFixture<WebApplicationFactory<Program>>
         var response = await _client.GetAsync("/");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
-        await VerifyJson(json);
+        await Verify(json, extension: "json");
     }
 
     [Fact]
