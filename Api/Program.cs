@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.DocumentFilter<ODataSwaggerCleanupFilter>();
     c.OperationFilter<ODataQueryOptionsOperationFilter>();
-    c.OperationFilter<ODataCollectionResponseOperationFilter>(); // wrap collection responses in OData envelope
+    c.OperationFilter<ODataCollectionResponseOperationFilter>();
     c.DocumentFilter<ApiKeySecurityDocumentFilter>();
 });
 

@@ -41,10 +41,19 @@ var uri = new ODataQueryBuilder<Container>(serviceRoot.ToString())
     .ToUri();
 var customersWithODataQueryBuilder = await ctx.ExecuteAsync<CustomerDto>(uri);
 
-WriteJsonInConsole(customersWithStringExpand, "Expand with raw string");
-WriteJsonInConsole(customersWithLambdaExpand, "Expand with lambda");
-WriteJsonInConsole(customersWithoutExpand, "No expand");
-WriteJsonInConsole(customersWithODataQueryBuilder, "Expand with ODataQueryBuilder");
+var httpClient = new HttpClient();
+httpClient.DefaultRequestHeaders.Add("ApiKey", "asd123");
+var apiClient = new OData.Demo.OpenApi.Client.ApiClient("https://localhost:7007/", httpClient);
+var customersWithOpenApiGeneratedClient = (await apiClient.CustomersAsync(
+    expand: "City,Orders($expand=Items)",
+    top: 1))
+    .Value;
+
+WriteJsonInConsole(customersWithStringExpand, "Microsoft.OData.Client - Expand with raw string");
+WriteJsonInConsole(customersWithLambdaExpand, "Microsoft.OData.Client - Expand with lambda");
+WriteJsonInConsole(customersWithoutExpand, "Microsoft.OData.Client - No expand");
+WriteJsonInConsole(customersWithODataQueryBuilder, "ODataQueryBuilder - Expand with lambda");
+WriteJsonInConsole(customersWithOpenApiGeneratedClient, "NSwag.ApiDescription.Client - Expand with raw string");
 
 static void WriteJsonInConsole<T>(IEnumerable<T> items, string title)
 {
